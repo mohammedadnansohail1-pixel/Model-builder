@@ -133,3 +133,66 @@ export const projectsAPI = {
 
   delete: (id: string) => api.delete(`/api/v1/projects/${id}`),
 };
+
+export const modelsAPI = {
+  searchHuggingFace: (query: string, modelType?: string, limit?: number) =>
+    api.post('/api/v1/models/search-huggingface', { query, model_type: modelType, limit }),
+
+  list: (modelType?: string, skip?: number, limit?: number) => {
+    const params: any = {};
+    if (modelType) params.model_type = modelType;
+    if (skip !== undefined) params.skip = skip;
+    if (limit !== undefined) params.limit = limit;
+    return api.get('/api/v1/models', { params });
+  },
+
+  import: (data: {
+    name: string;
+    model_type: string;
+    model_id: string;
+    description?: string;
+    source?: string;
+    tags?: string[];
+  }) => api.post('/api/v1/models', data),
+
+  get: (id: string) => api.get(`/api/v1/models/${id}`),
+
+  update: (id: string, data: {
+    name?: string;
+    description?: string;
+    tags?: string[];
+    is_public?: boolean;
+  }) => api.put(`/api/v1/models/${id}`, data),
+
+  delete: (id: string) => api.delete(`/api/v1/models/${id}`),
+};
+
+export const datasetsAPI = {
+  upload: (formData: FormData) => api.post('/api/v1/datasets/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
+
+  list: (projectId?: string, skip?: number, limit?: number) => {
+    const params: any = {};
+    if (projectId) params.project_id = projectId;
+    if (skip !== undefined) params.skip = skip;
+    if (limit !== undefined) params.limit = limit;
+    return api.get('/api/v1/datasets', { params });
+  },
+
+  get: (id: string) => api.get(`/api/v1/datasets/${id}`),
+
+  update: (id: string, data: {
+    name?: string;
+    description?: string;
+    tags?: string[];
+  }) => api.put(`/api/v1/datasets/${id}`, data),
+
+  configureSplit: (id: string, data: {
+    train_split: number;
+    validation_split: number;
+    test_split: number;
+  }) => api.post(`/api/v1/datasets/${id}/configure-split`, data),
+
+  delete: (id: string) => api.delete(`/api/v1/datasets/${id}`),
+};

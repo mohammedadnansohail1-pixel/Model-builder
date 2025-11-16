@@ -196,3 +196,35 @@ export const datasetsAPI = {
 
   delete: (id: string) => api.delete(`/api/v1/datasets/${id}`),
 };
+
+export const trainingAPI = {
+  create: (data: {
+    name: string;
+    description?: string;
+    project_id: string;
+    base_model_id: string;
+    dataset_id: string;
+    fine_tuning_method: string;
+    hyperparameters?: any;
+  }) => api.post('/api/v1/training', data),
+
+  list: (params?: {
+    project_id?: string;
+    status?: string;
+    skip?: number;
+    limit?: number;
+  }) => api.get('/api/v1/training', { params }),
+
+  get: (id: string) => api.get(`/api/v1/training/${id}`),
+
+  update: (id: string, data: {
+    name?: string;
+    description?: string;
+  }) => api.put(`/api/v1/training/${id}`, data),
+
+  cancel: (id: string) => api.post(`/api/v1/training/${id}/cancel`),
+
+  delete: (id: string) => api.delete(`/api/v1/training/${id}`),
+
+  listConfigs: () => api.get('/api/v1/training/configs'),
+};

@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from app.core.config import settings
 from app.core.redis import close_redis, get_redis
-from app.api.v1 import auth, users, organizations, projects, models, datasets
+from app.api.v1 import auth, users, organizations, projects, models, datasets, training
 
 
 @asynccontextmanager
@@ -109,4 +109,10 @@ app.include_router(
     datasets.router,
     prefix=f"{settings.API_V1_PREFIX}/datasets",
     tags=["datasets"]
+)
+
+app.include_router(
+    training.router,
+    prefix=f"{settings.API_V1_PREFIX}/training",
+    tags=["training"]
 )

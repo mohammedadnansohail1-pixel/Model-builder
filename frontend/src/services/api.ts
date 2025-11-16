@@ -228,3 +228,58 @@ export const trainingAPI = {
 
   listConfigs: () => api.get('/api/v1/training/configs'),
 };
+
+export const deploymentsAPI = {
+  create: (data: {
+    name: string;
+    description?: string;
+    model_id: string;
+    project_id: string;
+    backend?: string;
+    configuration?: any;
+    resource_allocation?: any;
+    replicas?: number;
+    min_replicas?: number;
+    max_replicas?: number;
+    auto_scaling_enabled?: boolean;
+  }) => api.post('/api/v1/deployments', data),
+
+  list: (params?: {
+    project_id?: string;
+    status_filter?: string;
+    skip?: number;
+    limit?: number;
+  }) => api.get('/api/v1/deployments', { params }),
+
+  get: (id: string) => api.get(`/api/v1/deployments/${id}`),
+
+  update: (id: string, data: {
+    name?: string;
+    description?: string;
+    configuration?: any;
+    resource_allocation?: any;
+    auto_scaling_enabled?: boolean;
+  }) => api.put(`/api/v1/deployments/${id}`, data),
+
+  start: (id: string) => api.post(`/api/v1/deployments/${id}/start`),
+
+  stop: (id: string) => api.post(`/api/v1/deployments/${id}/stop`),
+
+  scale: (id: string, data: { replicas: number }) =>
+    api.post(`/api/v1/deployments/${id}/scale`, data),
+
+  delete: (id: string) => api.delete(`/api/v1/deployments/${id}`),
+
+  inference: (id: string, data: { inputs: string; parameters?: any }) =>
+    api.post(`/api/v1/deployments/${id}/inference`, data),
+
+  getLogs: (id: string, params?: {
+    limit?: number;
+    offset?: number;
+    success_only?: boolean;
+  }) => api.get(`/api/v1/deployments/${id}/logs`, { params }),
+
+  getMetrics: (id: string) => api.get(`/api/v1/deployments/${id}/metrics`),
+
+  checkHealth: (id: string) => api.get(`/api/v1/deployments/${id}/health`),
+};

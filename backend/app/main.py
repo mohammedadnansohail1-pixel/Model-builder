@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from app.core.config import settings
 from app.core.redis import close_redis, get_redis
-from app.api.v1 import auth, users, organizations, projects, models, datasets, training
+from app.api.v1 import auth, users, organizations, projects, models, datasets, training, deployments
 
 
 @asynccontextmanager
@@ -115,4 +115,10 @@ app.include_router(
     training.router,
     prefix=f"{settings.API_V1_PREFIX}/training",
     tags=["training"]
+)
+
+app.include_router(
+    deployments.router,
+    prefix=f"{settings.API_V1_PREFIX}/deployments",
+    tags=["deployments"]
 )
